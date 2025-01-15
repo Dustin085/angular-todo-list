@@ -1,0 +1,57 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  line-height: normal;
+}
+/* tailwind和Mat有衝突，必須加入下面的樣式以消除 <mat-form-field appearance="outline"> 多餘的線條*/
+.mdc-notched-outline__notch {
+  border-right: none;
+}
+input:-internal-autofill-selected {
+  appearance: menulist-button;
+  background-image: none !important;
+  background-color: transparent !important;
+  color: fieldtext !important;
+}
+
+.horizontal-card {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 16px; /* 控制卡片內部間距 */
+  padding: 4px 8px;
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 讓內容均勻排列 */
+    margin: auto;
+  }
+
+  mat-card-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  mat-card-subtitle {
+    margin-bottom: 8px;
+    color: gray;
+  }
+
+  mat-card-actions {
+    padding: 0;
+  }
+}

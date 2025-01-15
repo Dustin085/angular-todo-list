@@ -1,0 +1,127 @@
+<header
+  class="mb-4 flex w-full items-center justify-between border-b-2 border-violet-300 border-opacity-30 p-3"
+>
+  <button mat-menu-button [mat-menu-trigger-for]="menu" class="flex">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu>
+    <button mat-menu-item>
+      <mat-icon>info</mat-icon>
+      <span>My Info</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>logout</mat-icon>
+      <span>Log Out</span>
+    </button>
+  </mat-menu>
+  <h1 class="text-3xl font-bold">
+    {{ title }}
+  </h1>
+</header>
+
+<main class="p-3">
+  <!-- form to add new todo -->
+  <form name="new-todo-form">
+    <mat-form-field class="w-full" appearance="outline">
+      <mat-label>Add New Todo...</mat-label>
+      <input
+        matInput
+        [(ngModel)]="newTodoTextSig"
+        name="newTodoTextInput"
+        autocomplete="off"
+      />
+      <button mat-icon-button matSuffix (click)="handleAddTodoSubmit()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+
+  <!-- TODO list -->
+  <h3>TO DO</h3>
+  <mat-selection-list role="list" class="py-4">
+    @for (todoItem of allTodoResult$ | async; track todoItem.id) {
+      @if (!todoItem.completed) {
+        <!-- <mat-list-item role="listitem">
+          <div matListItemIcon (click)="handleToggleTodoItem(todoItem)">
+            <mat-icon>circle</mat-icon>
+          </div>
+          <div matListItemLine (click)="handleTodoItemClick(todoItem)">
+            {{ todoItem.title }}
+          </div>
+          <div matListItemMeta>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="handleDeleteTodoItem(todoItem)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-list-item> -->
+        <mat-card class="horizontal-card" appearance="outlined">
+          <mat-card-actions>
+            <button mat-icon-button (click)="handleToggleTodoItem(todoItem)">
+              <mat-icon>circle</mat-icon>
+            </button>
+          </mat-card-actions>
+          <mat-card-content
+            (click)="handleTodoItemClick(todoItem)"
+          >
+            {{ todoItem.title }}
+          </mat-card-content>
+          <mat-card-footer>
+            <button mat-icon-button (click)="handleDeleteTodoItem(todoItem)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-footer>
+        </mat-card>
+        <!-- @if (!($index === ((allTodoResult$ | async)?.length ?? 0) - 1)) {
+          <mat-divider></mat-divider>
+        } -->
+      }
+    }
+  </mat-selection-list>
+  <!-- COMPLETED list -->
+  <h3>COMPLETED</h3>
+  <mat-selection-list role="list" class="py-4">
+    @for (todoItem of allTodoResult$ | async; track todoItem.id) {
+      @if (todoItem.completed) {
+        <!-- <mat-list-item role="listitem">
+      <div matListItemIcon (click)="handleToggleTodoItem(todoItem)">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <div matListItemTitle class="line-through" (click)="handleTodoItemClick(todoItem)">
+        {{ todoItem.title }}
+      </div>
+      <div matListItemMeta>
+        <button mat-icon-button color="warn" (click)="handleDeleteTodoItem(todoItem)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-list-item> -->
+
+        <mat-card class="horizontal-card" appearance="outlined">
+          <mat-card-actions>
+            <button mat-icon-button (click)="handleToggleTodoItem(todoItem)">
+              <mat-icon>check_circle</mat-icon>
+            </button>
+          </mat-card-actions>
+          <mat-card-content
+            class="line-through"
+            (click)="handleTodoItemClick(todoItem)"
+          >
+            {{ todoItem.title }}
+          </mat-card-content>
+          <mat-card-footer>
+            <button mat-icon-button (click)="handleDeleteTodoItem(todoItem)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-footer>
+        </mat-card>
+        <!-- @if (!($index === ((allTodoResult$ | async)?.length ?? 0) - 1)) {
+    <mat-divider></mat-divider>
+    } -->
+      }
+    }
+  </mat-selection-list>
+</main>

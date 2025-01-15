@@ -2,17 +2,22 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.5.
 
-## Prettier
-npx prettier . --write
-
 ## TODO
-- [] 刪除資料時需要一個確認dialog
-- [] 對todo加上createAt項目
-- [] 對todo加上dueDate項目
-  - [] 在editor dialog加上可以修改dueDate的欄位，或考慮使用分開的dialog
-- [] 將資料暫存到LocalStorage，以儲存未登入者的資料
-- [] 建立auth，依照不同用戶在firebase建立資料
-- [] 設定一個提醒氣泡，提醒未登入用戶若未登入則資料有可能遺失
+- [ ] 刪除資料時需要一個確認dialog
+- [ ] 對todo加上createAt項目
+- [ ] 對todo加上dueDate項目
+  - [ ] 在editor dialog加上可以修改dueDate的欄位，或考慮使用分開的dialog
+- [ ] 將資料暫存到LocalStorage，以儲存未登入者的資料
+- [ ] 建立auth，依照不同用戶在firebase建立資料
+- [ ] 設定一個提醒氣泡，提醒未登入用戶若未登入則資料有可能遺失
+
+## Prettier
+
+執行Prettier：
+
+```bash
+npx prettier . --write
+```
 
 ## Development server
 

@@ -1,0 +1,35 @@
+<h4 mat-dialog-title>Editing TODO</h4>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <p class="mb-2">Title: {{ data.title }}</p>
+  <mat-form-field class="w-full" appearance="outline">
+    <mat-label>New Todo Title</mat-label>
+    <input
+      type="text"
+      matInput
+      [(ngModel)]="newTitleSig"
+      name="newTitle"
+      required
+      autocomplete="off"
+    />
+    @if (newTitleSig()) {
+      <button
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="newTitleSig.set('')"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+  <mat-checkbox
+    [checked]="newCompletedSig()"
+    (change)="newCompletedSig.set($event.checked)"
+    >Completed ?</mat-checkbox
+  >
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-stroked-button (click)="dialogRef.close()">Cancel</button>
+  <button mat-flat-button (click)="handleSubmitTodoEdit()">Apply Change</button>
+</mat-dialog-actions>
