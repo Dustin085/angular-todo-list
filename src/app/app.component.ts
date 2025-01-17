@@ -98,6 +98,6 @@ export class AppComponent {
   }
 
   handleToggleTodoItem(todoItem: TodoItem) {
-    this.$todo.togleTodoItem(todoItem);
+    this.$todo.toggleTodoItem(todoItem);
   }
 }
