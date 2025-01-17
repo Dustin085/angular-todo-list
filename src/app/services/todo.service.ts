@@ -1,28 +1,60 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { TodoItem } from '../../models/todo.type';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   addDoc,
   collection,
   collectionData,
+  CollectionReference,
   deleteDoc,
   doc,
-  DocumentReference,
   Firestore,
-  getDoc,
-  setDoc,
   updateDoc,
 } from '@angular/fire/firestore';
 
+/**
+ * This service can 'CRUD' todos, base on firebase.
+ *
+ * @exports
+ * @class TodoService
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class TodoService {
-  private firestore = inject(Firestore);
+  /**
+   * firestore, will need this when using firebase
+   * @private
+   * @type {Firestore}
+   */
+  private firestore: Firestore = inject(Firestore);
 
-  todoCollection = collection(this.firestore, 'todos');
-  todos$ = this.getAllTodos();
-  isPendingSig = signal(false);
+  /**
+   * Firebae Database collection of todos
+   * @private
+   * @type {CollectionReference}
+   */
+  private todoCollection: CollectionReference = collection(this.firestore, 'todos');
+
+  /**
+   * A signal<boolean> reflect isPending to firebase
+   * @public
+   * @type {WritableSignal<boolean>}
+   */
+  public isPendingSig: WritableSignal<boolean> = signal(false);
+
+  /**
+   * Observable, emit sorted todos(sorted by new to old)
+   * @public
+   * @type {Observable<TodoItem[]>}
+   */
+  public todos$: Observable<TodoItem[]> = this.getAllTodos()
+    .pipe(map(todos => {
+      return todos.sort((a, b) => {
+        // descend, cause bigger number means the time is closer
+        return b.createdAt - a.createdAt;
+      });
+    }));
 
   /**
    * Return all todo items as a Observable
@@ -54,7 +86,6 @@ export class TodoService {
   /**
    * Toggle a todo item, completed = !completed
    * @param todoItem - the todo item who is going to toggle
-   * @returns undefined, only return because early return
    */
   togleTodoItem(todoItem: TodoItem) {
     console.log('toggling todoItem: ' + todoItem.title);
@@ -71,7 +102,7 @@ export class TodoService {
   }
 
   /**
-   * Add a new todo item with API
+   * Add a new todo
    * @param {string} title - title of new todo item
    */
   addTodoItem(title: string) {
@@ -81,12 +112,17 @@ export class TodoService {
       addDoc(this.todoCollection, {
         title: title,
         completed: false,
+        createdAt: Date.now(),
       });
     } catch (error) {
       console.log(error);
     }
   }
 
+  /**
+   * Delete target todo
+   * @param todoItem - todo who is going to delete
+   */
   deleteTodoItem(todoItem: TodoItem) {
     console.log('deleting todo: ' + todoItem.title);
     try {

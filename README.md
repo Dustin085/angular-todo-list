@@ -3,13 +3,20 @@
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.5.
 
 ## TODO
-- [ ] 刪除資料時需要一個確認dialog
-- [ ] 對todo加上createAt項目
-- [ ] 對todo加上dueDate項目
+
+- [O] 刪除資料時需要一個確認dialog
+- [O] 令todos可以被排序
+  - [O] 在資料庫內對todo加上createAt項目
+  - [O] 撰寫排序邏輯
+- [ ] 令todo有一個截止日期時間
+  - [ ] 在資料庫內對todo加上dueDate項目
+  - [ ] 渲染dueDate
   - [ ] 在editor dialog加上可以修改dueDate的欄位，或考慮使用分開的dialog
 - [ ] 將資料暫存到LocalStorage，以儲存未登入者的資料
 - [ ] 建立auth，依照不同用戶在firebase建立資料
+- [ ] 初始化資料，依照是否登入決定從後端要資料或LocalStorage
 - [ ] 設定一個提醒氣泡，提醒未登入用戶若未登入則資料有可能遺失
+- [ ] 美化todo editor dialog的布局與樣式
 
 ## Prettier
 

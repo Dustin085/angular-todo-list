@@ -1,7 +1,8 @@
-<h4 mat-dialog-title>Editing TODO</h4>
+<h4 mat-dialog-title>Editing Todo</h4>
 <mat-divider></mat-divider>
 <mat-dialog-content>
   <p class="mb-2">Title: {{ data.title }}</p>
+  <p class="mb-6">Created At: {{ createTimeString | async }}</p>
   <mat-form-field class="w-full" appearance="outline">
     <mat-label>New Todo Title</mat-label>
     <input

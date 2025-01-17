@@ -16,6 +16,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TodoItem } from '../../../../models/todo.type';
 import { TodoService } from '../../../services/todo.service';
 import { MatSnackBarService } from '../../../services/mat-snack-bar.service';
+import { BehaviorSubject, map } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-todo-editor-dialog',
@@ -30,6 +32,7 @@ import { MatSnackBarService } from '../../../services/mat-snack-bar.service';
     MatCheckboxModule,
     MatIconModule,
     FormsModule,
+    CommonModule,
   ],
   templateUrl: './todo-editor-dialog.component.html',
   styleUrl: './todo-editor-dialog.component.css',
@@ -41,6 +44,11 @@ export class TodoEditorDialogComponent {
   $snackBar = inject(MatSnackBarService);
   newTitleSig = signal(this.data.title);
   newCompletedSig = signal(this.data.completed);
+
+  createTimeString = new BehaviorSubject(this.data.createdAt)
+    .pipe(map(createdAt => {
+      return new Date(createdAt).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' });
+    }));
 
   /**
    * Submit a todo item edit to database

@@ -23,6 +23,11 @@ input:-internal-autofill-selected {
   color: fieldtext !important;
 }
 
+/* 視覺上置中 <mat-form-field appearance="outline"> 的輸入文字，此input的布局會讓人感覺輸入文字偏高，因為文字下方比上面空太多 */
+.mdc-notched-outline + .mat-mdc-form-field-infix .mat-mdc-input-element {
+  transform: translateY(2px) !important;
+}
+
 .horizontal-card {
   display: flex !important;
   flex-direction: row !important;

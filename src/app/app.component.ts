@@ -13,6 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { TodoEditorDialogComponent } from './components/dialogs/todo-editor-dialog/todo-editor-dialog.component';
 import { MatSnackBarService } from './services/mat-snack-bar.service';
+import { TodoDeleteDialogComponent } from './components/dialogs/todo-delete-dialog/todo-delete-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -43,7 +44,7 @@ export class AppComponent {
   allTodoResult$ = this.$todo.todos$;
 
   /**
-   * call updateTodoItem from $todo to toggle completed
+   * Trigger this func when todo being clicked
    * @param {TodoItem} todoItem - 被點擊到的item
    */
   handleTodoItemClick(todoItem: TodoItem) {
@@ -77,11 +78,23 @@ export class AppComponent {
   }
 
   /**
+   * Open a mat-dialog to confirm DELETE todo
+   * @param todoItem - Todo who is going to DELETE
+   */
+  openTodoDeleteDialog(todoItem: TodoItem) {
+    this.dialog.open(TodoDeleteDialogComponent, {
+      data: todoItem,
+      autoFocus: false,
+    });
+  }
+
+  /**
    * Open a mat-dialog to comfirm if user want to delete this todo
    * @param todoItem - Todo item who is going to delete
    */
   handleDeleteTodoItem(todoItem: TodoItem) {
-    this.$todo.deleteTodoItem(todoItem);
+    this.openTodoDeleteDialog(todoItem);
+    // this.$todo.deleteTodoItem(todoItem);
   }
 
   handleToggleTodoItem(todoItem: TodoItem) {
