@@ -12,17 +12,18 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
   - [ ] 在資料庫內對todo加上dueDate項目
   - [ ] 渲染dueDate
   - [ ] 在editor dialog加上可以修改dueDate的欄位，或考慮使用分開的dialog
-- [ ] 將資料暫存到LocalStorage，以儲存未登入者的資料
+- [O] 將資料暫存到LocalStorage，以儲存未登入者的資料
   - [O] 在todo.service.ts裡建立CRUDStrategies來使得CRUDFunction在使用者登入與未登入的狀態下使用不同函數
-  - [ ] 修改CRUD函數使其符合CRUDStrategies的要求，未登入 => localStorage，登入 => firebase
-    - [ ] Create
+  - [O] 修改CRUD函數使其符合CRUDStrategies的要求，未登入 => localStorage，登入 => firebase
+    - [O] Create
     - [O] Read
-    - [ ] Update
-    - [ ] Delete
+    - [O] Update
+    - [O] Delete
 - [ ] 建立auth，依照不同用戶在firebase建立資料
 - [ ] 初始化資料，依照是否登入決定從後端要資料或LocalStorage
 - [ ] 設定一個提醒氣泡，提醒未登入用戶若未登入則資料有可能遺失
 - [ ] 美化todo editor dialog的布局與樣式
+- [ ] 避免呼叫 updateTodoItem()，當todo沒有被修改時
 
 ## Prettier
 

@@ -97,8 +97,77 @@ export class TodoService {
         createdAt: Date.now(),
       });
       localStorage.setItem('todos', JSON.stringify(localTodos));
+      this.notifyLocalStorageChange();
     }
   });
+
+  /**
+  * Update a todo item with API
+  * @param todoItem - the todo item going to update
+  */
+  public updateTodoItem = this.createCRUDFunction({
+    loggedIn: (todoItem: TodoItem) => {
+      console.log('updating todoItem: ' + todoItem.title);
+      console.log(todoItem);
+      try {
+        // update the todo item with firebase API
+        const { id, ...todoItemWithoutId } = todoItem;
+        updateDoc(doc(this.firestore, 'todos', todoItem.id), todoItemWithoutId);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    guest: (todoItem: TodoItem) => {
+      console.log('updating todoItem: ' + todoItem.title);
+      console.log(todoItem);
+      try {
+        const localTodos = this.todosLocalStorageSubject.value;
+        const newLocalTodos = localTodos.map((todo) => {
+          if (todo.id === todoItem.id) {
+            return todoItem;
+          }
+          return todo;
+        });
+        localStorage.setItem('todos', JSON.stringify(newLocalTodos));
+      } catch (error) {
+        console.log(error);
+      }
+      this.notifyLocalStorageChange();
+    },
+  });
+
+  /**
+   * Delete target todo
+   * @param todoItem - todo who is going to delete
+   */
+  public deleteTodoItem = this.createCRUDFunction({
+    loggedIn: (todoItem: TodoItem) => {
+      console.log('deleting todo: ' + todoItem.title);
+      try {
+        deleteDoc(doc(this.firestore, 'todos', todoItem.id));
+      } catch (error) {
+        if (error instanceof Error) {
+          console.log(`Error message: ${error.message}`);
+          return;
+        }
+        console.log(error);
+      }
+    },
+    guest: (todoItem: TodoItem) => {
+      console.log('deleting todo: ' + todoItem.title);
+      try {
+        const localTodos = this.todosLocalStorageSubject.value;
+        const newLocalTodos = localTodos.filter((todo) => {
+          return todo.id != todoItem.id;
+        });
+        console.log(newLocalTodos);
+        localStorage.setItem('todos',JSON.stringify(newLocalTodos));
+        this.notifyLocalStorageChange();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  })
 
   /**
    * a BehaviorSubject who reflect todos in local storage
@@ -130,6 +199,13 @@ export class TodoService {
       return [];
     }
     return [];
+  };
+
+  /**
+   * Should call this function when LocalStorage Change
+   */
+  private notifyLocalStorageChange() {
+    this.todosLocalStorageSubject.next(this.getAllTodosFromLocalStorage());
   };
 
   /**
@@ -173,21 +249,7 @@ export class TodoService {
       });
     }));
 
-  /**
-   * Update a todo item with API
-   * @param todoItem - the todo item going to update
-   */
-  updateTodoItem(todoItem: TodoItem): void {
-    console.log('updating todoItem: ' + todoItem.title);
-    console.log(todoItem);
-    try {
-      // update the todo item with firebase API
-      const { id, ...todoItemWithoutId } = todoItem;
-      updateDoc(doc(this.firestore, 'todos', todoItem.id), todoItemWithoutId);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+
 
   /**
    * Toggle a todo item, completed = !completed
@@ -207,20 +269,5 @@ export class TodoService {
     }
   }
 
-  /**
-   * Delete target todo
-   * @param todoItem - todo who is going to delete
-   */
-  deleteTodoItem(todoItem: TodoItem) {
-    console.log('deleting todo: ' + todoItem.title);
-    try {
-      deleteDoc(doc(this.firestore, 'todos', todoItem.id));
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log(`Error message: ${error.message}`);
-        return;
-      }
-      console.log(error);
-    }
-  }
+
 }
