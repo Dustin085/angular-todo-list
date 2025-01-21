@@ -1,6 +1,6 @@
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { TodoItem } from '../../models/todo.type';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, toArray } from 'rxjs';
 import {
   addDoc,
   collection,
@@ -11,10 +11,11 @@ import {
   Firestore,
   updateDoc,
 } from '@angular/fire/firestore';
+import { generateNotRepeatedId, generateRandomId } from '../shared/utils';
 
-type CRUDFunction = ((...arg: any[]) => Observable<any>) | ((...arg: any[]) => void);
+// type CRUDFunction = ((...arg: any[]) => Observable<any>) | ((...arg: any[]) => void);
 
-interface CRUDStrategies {
+interface CRUDStrategies<CRUDFunction> {
   loggedIn: CRUDFunction;
   guest: CRUDFunction;
 }
@@ -34,7 +35,7 @@ export class TodoService {
    * @param strategies - contain functions who is going to run in different condition
    * @returns a function, check isLoggedIn before running
    */
-  private createCRUDFunction(strategies: CRUDStrategies) {
+  private createCRUDFunction<CRUDFunction>(strategies: CRUDStrategies<CRUDFunction>) {
     const isLoggedIn = this.checkIsLoggedIn();
     if (isLoggedIn) {
       return strategies.loggedIn;
@@ -54,7 +55,7 @@ export class TodoService {
 
   /**
   * Return all todo items as a Observable
-  * @returns {Observable<Array<TodoItem>>} - an observable for all todo item
+  * @returns {Observable<Array<TodoItem>>} an observable for all todo item
   */
   public getAllTodos = this.createCRUDFunction({
     loggedIn: () => {
@@ -65,6 +66,39 @@ export class TodoService {
     ,
     guest: this.getTodosLocalStorageObservable
   }) as () => Observable<TodoItem[]>;
+
+  /**
+ * Add a new todo
+ * @param {string} title - title of new todo item
+ */
+  public addTodoItem = this.createCRUDFunction({
+    loggedIn: (title: string) => {
+      console.log('adding new item: ' + title);
+      try {
+        // add new todo item with firebase API
+        addDoc(this.todoCollection, {
+          title: title,
+          completed: false,
+          createdAt: Date.now(),
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    guest: (title: string) => {
+      console.log('adding new item: ' + title);
+      const localTodos = this.todosLocalStorageSubject.value;
+      const newId = generateNotRepeatedId(20, localTodos.map(todo => todo.id));
+      console.log('the new item id: ' + newId);
+      localTodos.push({
+        id: newId,
+        title: title,
+        completed: false,
+        createdAt: Date.now(),
+      });
+      localStorage.setItem('todos', JSON.stringify(localTodos));
+    }
+  });
 
   /**
    * a BehaviorSubject who reflect todos in local storage
@@ -169,24 +203,6 @@ export class TodoService {
         console.log(error.message);
         return;
       }
-      console.log(error);
-    }
-  }
-
-  /**
-   * Add a new todo
-   * @param {string} title - title of new todo item
-   */
-  addTodoItem(title: string) {
-    console.log('adding new item: ' + title);
-    try {
-      // add new todo item with firebase API
-      addDoc(this.todoCollection, {
-        title: title,
-        completed: false,
-        createdAt: Date.now(),
-      });
-    } catch (error) {
       console.log(error);
     }
   }
