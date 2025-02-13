@@ -1,24 +1,27 @@
 # AngularTodoList
 
+目前暫時使用localStorage當作資料儲存點，之後則會使用Firebase Database來儲存資料。
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.5.
 
 ## TODO
 
-- [O] 刪除資料時需要一個確認dialog
-- [O] 令todos可以被排序
-  - [O] 在資料庫內對todo加上createAt項目
-  - [O] 撰寫排序邏輯
+- [x] 刪除資料時需要一個確認dialog
+- [x] 令todos可以被排序
+  - [x] 在資料庫內對todo加上createAt項目
+  - [x] 撰寫排序邏輯
 - [ ] 令todo有一個截止日期時間
   - [ ] 在資料庫內對todo加上dueDate項目
   - [ ] 渲染dueDate
   - [ ] 在editor dialog加上可以修改dueDate的欄位，或考慮使用分開的dialog
-- [O] 將資料暫存到LocalStorage，以儲存未登入者的資料
-  - [O] 在todo.service.ts裡建立CRUDStrategies來使得CRUDFunction在使用者登入與未登入的狀態下使用不同函數
-  - [O] 修改CRUD函數使其符合CRUDStrategies的要求，未登入 => localStorage，登入 => firebase
-    - [O] Create
-    - [O] Read
-    - [O] Update
-    - [O] Delete
+- [x] 將資料暫存到LocalStorage，以儲存未登入者的資料
+  - [x] 在todo.service.ts裡建立CRUDStrategies來使得CRUDFunction在使用者登入與未登入的狀態下使用不同函數
+  - [x] 修改CRUD函數使其符合CRUDStrategies的要求，未登入 => localStorage，登入 => firebase
+    - [x] Create
+    - [x] Read
+    - [x] Update
+    - [x] Delete
+- [ ] 修改todo item可以被點擊的區域，使其更加容易被點擊
 - [ ] 建立auth，依照不同用戶在firebase建立資料
 - [ ] 初始化資料，依照是否登入決定從後端要資料或LocalStorage
 - [ ] 設定一個提醒氣泡，提醒未登入用戶若未登入則資料有可能遺失
