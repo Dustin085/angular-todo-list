@@ -27,6 +27,8 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 - [ ] 設定一個提醒氣泡，提醒未登入用戶若未登入則資料有可能遺失
 - [ ] 美化todo editor dialog的布局與樣式
 - [ ] 避免呼叫 updateTodoItem()，當todo沒有被修改時
+- [ ] 暫時提高了"maximumError": "1.5MB"，在angular.json裡面(從1MB=>1.5MB)
+  - [ ] 尋找減少bundle大小的方法
 
 ## Prettier
 
