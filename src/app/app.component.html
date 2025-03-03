@@ -58,17 +58,17 @@
             </button>
           </div>
         </mat-list-item> -->
-        <mat-card class="horizontal-card" appearance="outlined">
+        <mat-card class="horizontal-card" appearance="outlined" (click)="handleTodoItemClick(todoItem)">
           <mat-card-actions>
-            <button mat-icon-button (click)="handleToggleTodoItem(todoItem)">
+            <button mat-icon-button (click)="handleToggleTodoItem(todoItem); $event.stopPropagation();">
               <mat-icon>circle</mat-icon>
             </button>
           </mat-card-actions>
-          <mat-card-content (click)="handleTodoItemClick(todoItem)">
+          <mat-card-content >
             {{ todoItem.title }}
           </mat-card-content>
           <mat-card-footer>
-            <button mat-icon-button (click)="handleDeleteTodoItem(todoItem)">
+            <button mat-icon-button (click)="handleDeleteTodoItem(todoItem); $event.stopPropagation();">
               <mat-icon>delete</mat-icon>
             </button>
           </mat-card-footer>
