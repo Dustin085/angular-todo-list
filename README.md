@@ -29,6 +29,7 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 - [ ] 避免呼叫 updateTodoItem()，當todo沒有被修改時
 - [ ] 暫時提高了"maximumError": "1.5MB"，在angular.json裡面(從1MB=>1.5MB)
   - [ ] 尋找減少bundle大小的方法
+- [ ] 統一mat-card的寫法，讓未完成與完成者共用部分邏輯
 
 ## Prettier
 
